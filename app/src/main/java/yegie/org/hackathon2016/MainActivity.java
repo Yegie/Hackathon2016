@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //perform some action
+                causeSergeySaidSo2();
             }
         });
     }
@@ -42,5 +42,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(mapIntent);
     }
 
+    private void causeSergeySaidSo2()
+    {
+        Intent mapIntent = new Intent(this,SettingsActivity.class);
+
+        startActivity(mapIntent);
+    }
 }
 

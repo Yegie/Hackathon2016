@@ -22,6 +22,9 @@
         <activity
             android:name=".MapActivity">
         </activity>
+        <activity
+            android:name=".SettingsActivity">
+        </activity>
     </application>
 
 </manifest>
