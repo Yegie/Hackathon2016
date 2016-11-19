@@ -1,5 +1,6 @@
 package yegie.org.hackathon2016;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +17,19 @@ public class SettingsActivity extends AppCompatActivity {
     private boolean gameSound;
     private double gameLength;
     private int spinnerIndex;
-    public final String SPINNER_TIME_INDEX = "spinner_time_index";
+    private static final String SPINNER_TIME_INDEX = "spinner_time_index";
     private SharedPreferences sharedPref;
-    public final String GAME_LENGTH = "game_length";
-    public final String GAME_SOUND = "game_sound";
+    public static final String GAME_LENGTH = "game_length";
+    public static final String GAME_SOUND = "game_sound";
+
+    public static Bundle getGameSettings(Context context)
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Bundle out = new Bundle();
+        out.putBoolean(GAME_SOUND,preferences.getBoolean(GAME_SOUND, true));
+        out.putFloat(GAME_LENGTH,preferences.getFloat(GAME_LENGTH, 3f));
+        return out;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +44,16 @@ public class SettingsActivity extends AppCompatActivity {
 
         ArrayAdapter<CharSequence> timeOptions = ArrayAdapter.createFromResource(this, R.array.time_options, android.R.layout.simple_spinner_item);
         timeOptions.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        assert timeSpinner != null;
         timeSpinner.setAdapter(timeOptions);
 
         if(sharedPref != null){
-            Log.d("DEBUG","we have a saved instance state");
-            timeSpinner.setSelection(sharedPref.getInt(SPINNER_TIME_INDEX,0));
-            soundCheck.setChecked(sharedPref.getBoolean(GAME_SOUND,false));
+            gameLength = sharedPref.getFloat(GAME_LENGTH,3f);
+            spinnerIndex = sharedPref.getInt(SPINNER_TIME_INDEX,0);
+            timeSpinner.setSelection(spinnerIndex);
+            assert soundCheck != null;
+            gameSound = sharedPref.getBoolean(GAME_SOUND,true);
+            soundCheck.setChecked(gameSound);
         }
 
 
