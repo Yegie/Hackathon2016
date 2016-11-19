@@ -1,5 +1,6 @@
 package yegie.org.hackathon2016;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,9 +21,10 @@ public class MainActivity extends AppCompatActivity {
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //perform some action
+                causeSergeySaidSo();
             }
         });
+
 
         assert settingsButton != null;
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -32,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void causeSergeySaidSo()
+    {
+        Intent mapIntent =new Intent(this,MapActivity.class);
 
+        startActivity(mapIntent);
+    }
 
 }
+
