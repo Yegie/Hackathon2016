@@ -3,12 +3,12 @@
     <string name="main_button">MAIN BUTTON TMP</string>
     <string name="settings_button">Settings</string>
     <string-array name = "time_options">
-        <item>"3"</item>
-        <item>"5"</item>
-        <item>"7"</item>
-        <item>"10"</item>
-        <item>"15"</item>
-        <item>"20"</item>
+        <item>"3 min"</item>
+        <item>"5 min"</item>
+        <item>"7 min"</item>
+        <item>"10 min"</item>
+        <item>"15 min"</item>
+        <item>"20 min"</item>
     </string-array>
     <string name="sound_settings">Sound Effects</string>
 </resources>
