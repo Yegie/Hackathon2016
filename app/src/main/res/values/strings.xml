@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Hackathon2016</string>
+    <string name="app_name">Geo Games 2016</string>
+    <string name="main_button">MAIN BUTTON TMP</string>
+    <string name="settings_button">Settings</string>
 </resources>
