@@ -31,7 +31,6 @@ public class MapActivity extends Activity {
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
-
         Location location = lm.getLastKnownLocation(Context.LOCATION_SERVICE);
 
         double longitude = location.getLongitude();
