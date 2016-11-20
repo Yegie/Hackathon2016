@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
