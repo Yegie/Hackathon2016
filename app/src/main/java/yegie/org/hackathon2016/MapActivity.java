@@ -238,7 +238,7 @@ public class MapActivity extends Activity {
             }
         }.start();
 
-        steps(t3);
+        steps(t1);
     }
 
     private void distributePoints(int n){
@@ -288,7 +288,7 @@ public class MapActivity extends Activity {
 
     }
 
-    public void steps(final TextView t3) {
+    public void steps(final TextView t1) {
 
         SensorManager sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -301,7 +301,7 @@ public class MapActivity extends Activity {
                                       public void onSensorChanged(SensorEvent event) {
                                           Log.d("debug", "changing text");
                                           float steps = event.values[0];
-                                          t3.setText((int) steps + "");
+                                          t1.setText("Steps: " + (int) steps);
                                       }
 
                                       @Override
