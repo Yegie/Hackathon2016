@@ -92,7 +92,8 @@ public class MapActivity extends Activity {
                         for(int i = 0; i < numOfCoins; ++i){
                             if(coinReal[i]) {
                                 Point cur = (Point) gl.getGraphic(idsOfCoins[i]).getGeometry();
-                                final float closeConst = 0.000009f;
+                                final float closeConst = 0.00009f;
+                                Log.d("debug",""+cur.getX()+" " + latitude + " " + cur.getY() + " " + longitude);
                                 if ((cur.getY() - latitude) * (cur.getY() - latitude) < closeConst
                                         && (cur.getX() - longitude) * (cur.getX() - longitude) < closeConst) {
                                     coinReal[i] = false;
