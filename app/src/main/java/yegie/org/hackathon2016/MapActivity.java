@@ -2,12 +2,10 @@ package yegie.org.hackathon2016;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.GpsStatus;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -68,9 +66,6 @@ public class MapActivity extends Activity {
 
         LocationManager lm=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Log.d("debug", "Provider enabled status is " + lm.isProviderEnabled(LocationManager.GPS_PROVIDER));
-
-
-//        Location location=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
         final LocationListener ll = new LocationListener() {
@@ -161,14 +156,6 @@ public class MapActivity extends Activity {
         mHandler.postDelayed(walker,200);
     }
 
-//        Log.d("debug", "Finished with location loop");
-//
-//        latitude=location.getLatitude();
-//        longitude=location.getLongitude();
-//
-//        Log.d("debug", "Latitude is " + latitude);
-//        Log.d("debug", "Longitude is " + longitude);
-
         setContentView(R.layout.activity_map);
 
 
@@ -179,33 +166,14 @@ public class MapActivity extends Activity {
         t1.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t2.setLayoutParams(new LinearLayout.LayoutParams(width,height));
 
-
-//        t1.setClickable(true);
-//        t1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                populateMarkers();
-//            }
-//        });
-
         m1=(MapView) findViewById(R.id.map);
 
         gl=new GraphicsLayer();
 
         m1.addLayer(gl);
 
-
-        //hardcode since GPS is slightly inaccurate for demo purposes
-//        latitude=39.998361;
-//        longitude=-83.00776;
-
         m1.centerAndZoom(latitude, longitude, .1f);
         m1.zoomin();
-
-
-        t1.setText("Test updating UI");
-
-
 
 
         // For whatever reason the points can only be added to the map
@@ -275,8 +243,6 @@ public class MapActivity extends Activity {
 
         SimpleMarkerSymbol simpleMarker = new SimpleMarkerSymbol(Color.RED, 10, SimpleMarkerSymbol.STYLE.CIRCLE);
 
-//        Point pointGeometry = new Point(longitude,latitude);
-
         Point pointGeometry = (Point) GeometryEngine.project(
                 new Point(longitude,latitude),
                 SpatialReference.create(SpatialReference.WKID_WGS84),
@@ -284,13 +250,6 @@ public class MapActivity extends Activity {
 
         Graphic pointGraphic = new Graphic(pointGeometry, simpleMarker);
         userUid = gl.addGraphic(pointGraphic);
-
-
-//        gl.setGraphicVisible(userDot,true);
-
-       // gl.addGraphic(pointGraphic);
-
-
     }
 
     public void steps(final TextView t1) {
