@@ -28,12 +28,18 @@ import com.esri.core.symbol.SimpleMarkerSymbol;
  */
 
 public class MapActivity extends Activity {
+    public static double MAP_LAT_START=39.998361;
+    public static double MAP_LNG_START=-83.00776;
+
     private GraphicsLayer gl=null;
     private MapView m1=null;
-    private int userUid;
-    private boolean glexists = false;
 
     double latitude, longitude;
+    private int userUid;
+
+    Handler mHandler=new Handler();
+    private Runnable walker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +61,12 @@ public class MapActivity extends Activity {
 //        Location location=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
-        LocationListener ll=new LocationListener() {
+        final LocationListener ll=new LocationListener() {
 
             @Override
             public void onLocationChanged(Location location) {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
-                m1.centerAt(latitude,longitude,true);
 
                 if (m1 != null) {
                     m1.centerAt(latitude, longitude, true);
@@ -91,10 +96,38 @@ public class MapActivity extends Activity {
             }
         };
 
-//        while (location==null)
-//        {
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-//        }
+        if(true) {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+        }
+        else {
+            walker=new Runnable() {
+            final static double RADIUS=0.0002;
+            final static double STEP=Math.PI/100;
+
+            double angle=0;
+
+            double clat=MAP_LAT_START;
+            double clng=MAP_LNG_START;
+
+            @Override
+            public void run() {
+                double lat=clat + RADIUS * Math.sin(angle);
+                double lng=clng + RADIUS * Math.cos(angle);
+
+                angle+=STEP;
+
+                Location location=new Location("fake");
+                location.setLatitude(lat);
+                location.setLongitude(lng);
+
+                ll.onLocationChanged(location);
+
+                mHandler.postDelayed(walker,200);
+            }
+        };
+
+        mHandler.postDelayed(walker,200);
+    }
 
 //        Log.d("debug", "Finished with location loop");
 //
@@ -188,7 +221,7 @@ public class MapActivity extends Activity {
 
         Graphic pointGraphic = new Graphic(pointGeometry, simpleMarker);
         userUid = gl.addGraphic(pointGraphic);
-        glexists = true;
+
 
 //        gl.setGraphicVisible(userDot,true);
 
