@@ -2,8 +2,6 @@ package yegie.org.hackathon2016;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.location.GpsStatus;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,13 +11,11 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.esri.android.map.GraphicsLayer;
-import com.esri.android.map.Layer;
 import com.esri.android.map.MapView;
 import com.esri.core.geometry.GeometryEngine;
 import com.esri.core.geometry.Point;
@@ -34,7 +30,7 @@ import com.esri.core.symbol.SimpleMarkerSymbol;
 public class MapActivity extends Activity {
     private GraphicsLayer gl=null;
     private MapView m1=null;
-    private int id;
+    private int userUid;
     private boolean glexists = false;
 
     double latitude, longitude;
@@ -66,17 +62,16 @@ public class MapActivity extends Activity {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
                 m1.centerAt(latitude,longitude,true);
-                if(glexists)
-                {
-                    GraphicsLayer[] lays = (GraphicsLayer[]) m1.getLayers();
-                    for(GraphicsLayer a : lays)
-                    {
-                        int[] b = a.getGraphicIDs();
-                        for(int j = 0; j<b.length; ++j)
-                        {
-                            ((Point)a.getGraphic(b[j]).getGeometry()).setXY(longitude,latitude);
-                        }
-                    }
+
+                if (m1 != null) {
+                    m1.centerAt(latitude, longitude, true);
+
+                    Point point = (Point) GeometryEngine.project(
+                            new Point(longitude,latitude),
+                            SpatialReference.create(SpatialReference.WKID_WGS84),
+                            m1.getSpatialReference());
+
+                    gl.updateGraphic(userUid, point);
                 }
             }
 
@@ -132,8 +127,8 @@ public class MapActivity extends Activity {
 
         gl=new GraphicsLayer();
 
-        id = m1.addLayer(gl);
-        glexists = true;
+        m1.addLayer(gl);
+
 
         //hardcode since GPS is slightly inaccurate for demo purposes
 //        latitude=39.998361;
@@ -192,7 +187,8 @@ public class MapActivity extends Activity {
                 m1.getSpatialReference());
 
         Graphic pointGraphic = new Graphic(pointGeometry, simpleMarker);
-        gl.addGraphic(pointGraphic);
+        userUid = gl.addGraphic(pointGraphic);
+        glexists = true;
 
 //        gl.setGraphicVisible(userDot,true);
 
