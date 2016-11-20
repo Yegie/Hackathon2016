@@ -30,7 +30,7 @@ import com.esri.core.symbol.SimpleMarkerSymbol;
 public class MapActivity extends Activity {
     public static double MAP_LAT_START=39.998361;
     public static double MAP_LNG_START=-83.00776;
-    public static float CONST_OF_RAND=0.021739f;
+    public static float CONST_OF_RAND=0.00987f;
 
     private GraphicsLayer gl=null;
     private MapView m1=null;
