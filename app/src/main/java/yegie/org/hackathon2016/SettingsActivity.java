@@ -1,5 +1,6 @@
 package yegie.org.hackathon2016;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -13,7 +14,7 @@ import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends Activity {
     private boolean gameSound;
     private double gameLength;
     private int spinnerIndex;
