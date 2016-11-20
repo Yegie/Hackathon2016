@@ -16,11 +16,9 @@ import android.widget.TextView;
 
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.MapView;
-import com.esri.core.geometry.Geometry;
 import com.esri.core.geometry.Point;
 import com.esri.core.map.Graphic;
 import com.esri.core.symbol.SimpleMarkerSymbol;
-import static yegie.org.hackathon2016.R.layout.activity_map;
 
 /**
  * Created by Kiera on 11/19/2016.
@@ -93,6 +91,10 @@ public class MapActivity extends Activity {
         TextView t3 =(TextView) findViewById(R.id.textView3);
         MapView m1 = (MapView) findViewById(R.id.map);
         GraphicsLayer gl = new GraphicsLayer();
+
+        //hardcode since GPS is slightly inaccurate for demo purposes
+        latitude = 39.998361;
+        longitude =  -83.00776;
 
         m1.centerAndZoom(latitude, longitude, .1f);
         m1.zoomin();
