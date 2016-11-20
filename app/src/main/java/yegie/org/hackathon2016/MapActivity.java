@@ -30,12 +30,15 @@ import com.esri.core.symbol.SimpleMarkerSymbol;
 public class MapActivity extends Activity {
     public static double MAP_LAT_START=39.998361;
     public static double MAP_LNG_START=-83.00776;
+    public static float CONST_OF_RAND=0.021739f;
 
     private GraphicsLayer gl=null;
     private MapView m1=null;
+    int[] idsOfCoins;
 
     double latitude, longitude;
     private int userUid;
+    boolean ditributedPoints = false;
 
     Handler mHandler=new Handler();
     private Runnable walker;
@@ -77,6 +80,10 @@ public class MapActivity extends Activity {
                             m1.getSpatialReference());
 
                     gl.updateGraphic(userUid, point);
+                    if(!ditributedPoints){
+                        ditributedPoints = true;
+                        distributePoints(30);
+                    }
                 }
             }
 
@@ -96,13 +103,14 @@ public class MapActivity extends Activity {
             }
         };
 
-        if(true) {
+        if(true) {//this is a debug thing the can simulate movement
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
         }
         else {
             walker=new Runnable() {
             final static double RADIUS=0.0002;
             final static double STEP=Math.PI/100;
+
 
             double angle=0;
 
@@ -205,6 +213,28 @@ public class MapActivity extends Activity {
                 t2.setText("Finished!");
             }
         }.start();
+    }
+
+    private void distributePoints(int n){
+
+        SimpleMarkerSymbol coinMarker = new SimpleMarkerSymbol(Color.MAGENTA, 8, SimpleMarkerSymbol.STYLE.CIRCLE);
+
+        idsOfCoins = new int[n];
+
+        for(int i = 0; i < n; ++i)
+        {
+            float xCord = (float)longitude + (float)(Math.random()*2-1)*CONST_OF_RAND;
+            float yCord = (float)latitude + (float)(Math.random()*2-1)*CONST_OF_RAND;
+
+            Point pointGeometry = (Point) GeometryEngine.project(
+                    new Point(xCord,yCord),
+                    SpatialReference.create(SpatialReference.WKID_WGS84),
+                    m1.getSpatialReference());
+
+            Graphic pointGraphic = new Graphic(pointGeometry, coinMarker);
+            idsOfCoins[i] = gl.addGraphic(pointGraphic);
+
+        }
     }
 
     private void populateMarkers() {
