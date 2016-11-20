@@ -42,21 +42,42 @@ public class MapActivity extends Activity {
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
-     //   LocationListener ll = new MyLocationListener();
+        LocationListener ll = new LocationListener(){
 
+            @Override
+            public void onLocationChanged(Location location) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
 
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
 
+            }
 
+            @Override
+            public void onProviderEnabled(String s) {
 
-        if (location==null)
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+
+            }
+        };
+
+        while (location==null)
         {
-       //     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new android.location.LocationListener());
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
         }
 
         Log.d("debug", "Finished with location loop");
 
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+
+        Log.d("debug", "Latitude is " + latitude);
+        Log.d("debug", "Longitude is " + longitude);
 
 
         setContentView(activity_map);
@@ -66,8 +87,7 @@ public class MapActivity extends Activity {
         TextView t3 =(TextView) findViewById(R.id.textView3);
         MapView m1 = (MapView) findViewById(R.id.map);
 
-
-        m1.centerAt(latitude, longitude, true);
+        m1.centerAndZoom(latitude, longitude, 50);
 
         t1.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t2.setLayoutParams(new LinearLayout.LayoutParams(width,height));
