@@ -154,6 +154,29 @@ public class MapActivity extends Activity {
                 populateMarkers();
             }
         },500);
+
+        CountDownTimer ct = new CountDownTimer(numMilliSeconds, 1000l) {
+
+            public void onTick(long millisUntilFinished) {
+                millisUntilFinished = millisUntilFinished - 1000l;
+
+                //Add an entra zero so time doesn't look weird if <10 seconds
+                StringBuilder str = new StringBuilder();
+                str.append(millisUntilFinished/1000/60);
+                str.append(":");
+                if ((((millisUntilFinished/1000)%60)<10))
+                {
+                    str.append("0");
+                }
+                str.append((millisUntilFinished/1000)%60);
+
+                t2.setText(str);
+            }
+
+            public void onFinish() {
+                t2.setText("Finished!");
+            }
+        }.start();
     }
 
     private void populateMarkers() {
@@ -175,27 +198,6 @@ public class MapActivity extends Activity {
 
        // gl.addGraphic(pointGraphic);
 
-//        CountDownTimer ct = new CountDownTimer(numMilliSeconds, 1000l) {
-//
-//            public void onTick(long millisUntilFinished) {
-//                millisUntilFinished = millisUntilFinished - 1000l;
-//
-//                //Add an entra zero so time doesn't look weird if <10 seconds
-//                StringBuilder str = new StringBuilder();
-//                str.append(millisUntilFinished/1000/60);
-//                str.append(":");
-//                if ((((millisUntilFinished/1000)%60)<10))
-//                {
-//                    str.append("0");
-//                }
-//                str.append((millisUntilFinished/1000)%60);
-//
-//                t2.setText(str);
-//            }
-//
-//            public void onFinish() {
-//                t2.setText("Finished!");
-//            }
-//        }.start();
+
     }
 }
