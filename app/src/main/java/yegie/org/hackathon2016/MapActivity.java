@@ -54,7 +54,7 @@ public class MapActivity extends Activity {
         Log.d("debug", "Provider enabled status is " + lm.isProviderEnabled(LocationManager.GPS_PROVIDER));
 
 
-        Location location=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        Location location=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
         LocationListener ll=new LocationListener() {
@@ -87,13 +87,13 @@ public class MapActivity extends Activity {
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 //        }
 
-        Log.d("debug", "Finished with location loop");
-
-        latitude=location.getLatitude();
-        longitude=location.getLongitude();
-
-        Log.d("debug", "Latitude is " + latitude);
-        Log.d("debug", "Longitude is " + longitude);
+//        Log.d("debug", "Finished with location loop");
+//
+//        latitude=location.getLatitude();
+//        longitude=location.getLongitude();
+//
+//        Log.d("debug", "Latitude is " + latitude);
+//        Log.d("debug", "Longitude is " + longitude);
 
         setContentView(R.layout.activity_map);
 
