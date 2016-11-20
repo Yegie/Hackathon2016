@@ -76,6 +76,11 @@ public class MapActivity extends Activity {
                 t3.setLayoutParams(new LinearLayout.LayoutParams(width,height));
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
+                Point pointGeometry = (Point) GeometryEngine.project(
+                        new Point(latitude,longitude),
+                        SpatialReference.create(SpatialReference.WKID_WGS84),
+                        m1.getSpatialReference());
+
                 if (m1 != null) {
                     m1.centerAt(latitude, longitude, true);
 
@@ -93,9 +98,9 @@ public class MapActivity extends Activity {
                             if(coinReal[i]) {
                                 Point cur = (Point) gl.getGraphic(idsOfCoins[i]).getGeometry();
                                 final float closeConst = 0.00009f;
-                                Log.d("debug",""+cur.getX()+" " + latitude + " " + cur.getY() + " " + longitude);
-                                if ((cur.getY() - latitude) * (cur.getY() - latitude) < closeConst
-                                        && (cur.getX() - longitude) * (cur.getX() - longitude) < closeConst) {
+                                Log.d("debug",""+cur.getX()+" " + pointGeometry.getX() + " " + cur.getY() + " " + pointGeometry.getY());
+                                if ((cur.getY() - pointGeometry.getY()) * (cur.getY() - pointGeometry.getY()) < closeConst
+                                        && (cur.getX() - pointGeometry.getX()) * (cur.getX() - pointGeometry.getX()) < closeConst) {
                                     coinReal[i] = false;
                                     coinsCollected++;
                                     t3.setText("Coins: " + coinsCollected);
