@@ -3,6 +3,10 @@ package yegie.org.hackathon2016;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.GpsStatus;
 import android.graphics.Color;
 import android.location.Location;
@@ -30,6 +34,8 @@ import com.esri.core.symbol.SimpleMarkerSymbol;
 /**
  * Created by Kiera on 11/19/2016.
  */
+
+
 
 public class MapActivity extends Activity {
     private GraphicsLayer gl=null;
@@ -100,7 +106,7 @@ public class MapActivity extends Activity {
 
         TextView t1=(TextView) findViewById(R.id.textView1);
         final TextView t2=(TextView) findViewById(R.id.textView2);
-        TextView t3=(TextView) findViewById(R.id.textView3);
+        final TextView t3=(TextView) findViewById(R.id.textView3);
 
         t1.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t2.setLayoutParams(new LinearLayout.LayoutParams(width,height));
@@ -129,6 +135,9 @@ public class MapActivity extends Activity {
 
         t1.setText("Test updating UI");
 
+
+
+
         // For whatever reason the points can only be added to the map
         // after it's already initialized. Doing this
         // half a second later.
@@ -139,6 +148,7 @@ public class MapActivity extends Activity {
                 populateMarkers();
             }
         },500);
+
 
         CountDownTimer ct = new CountDownTimer(numMilliSeconds, 1000l) {
 
@@ -162,6 +172,8 @@ public class MapActivity extends Activity {
                 t2.setText("Finished!");
             }
         }.start();
+
+        steps(t3);
     }
 
     private void populateMarkers() {
@@ -185,4 +197,44 @@ public class MapActivity extends Activity {
 
 
     }
+
+    public void steps(final TextView t3) {
+
+        SensorManager sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        Log.d("debug", "entering steps");
+
+        // Step Counter
+        sManager.registerListener(new SensorEventListener() {
+
+                                      @Override
+                                      public void onSensorChanged(SensorEvent event) {
+                                          Log.d("debug", "changing text");
+                                          float steps = event.values[0];
+                                          t3.setText((int) steps + "");
+                                      }
+
+                                      @Override
+                                      public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                                      }
+                                  }, sManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER),
+                SensorManager.SENSOR_DELAY_UI);
+
+        // Step Detector
+        sManager.registerListener(new SensorEventListener() {
+
+                                      @Override
+                                      public void onSensorChanged(SensorEvent event) {
+                                          //numSteps++;
+                                      }
+
+                                      @Override
+                                      public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                                      }
+                                  }, sManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR),
+                SensorManager.SENSOR_DELAY_UI);
+    }
+
 }

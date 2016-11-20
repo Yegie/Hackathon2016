@@ -41,6 +41,8 @@ public class MainActivity extends Activity {
                 startSettingsAct();
             }
         });
+
+
     }
 
     private void getSettings() {
