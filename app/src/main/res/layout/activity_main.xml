@@ -9,20 +9,29 @@
     tools:context="yegie.org.hackathon2016.MainActivity">
 
     <TextView
+        android:layout_gravity="center"
+        android:textSize="40sp"
+        android:layout_marginRight="6dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:text="Imaginative Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:textSize="40sp"
-        android:text="@string/app_name"/>
+        />
+
+    <ImageView
+        android:src ="@drawable/background_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_gravity="center"
         android:textSize="25sp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="25dp"
         android:text="@string/main_button"
@@ -31,6 +40,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_gravity="center"
         android:textSize="25sp"
         android:layout_marginRight="25dp"
