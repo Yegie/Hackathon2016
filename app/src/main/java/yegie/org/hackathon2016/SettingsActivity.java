@@ -73,21 +73,27 @@ public class SettingsActivity extends Activity {
                 switch (i) {
                     case (0): {
                         gameLength = 3;
+                        break;
                     }
                     case (1): {
                         gameLength = 5;
+                        break;
                     }
                     case (2): {
                         gameLength = 7;
+                        break;
                     }
                     case (3): {
                         gameLength = 10;
+                        break;
                     }
                     case (4): {
                         gameLength = 15;
+                        break;
                     }
                     case (5): {
                         gameLength = 20;
+                        break;
                     }
                 }
                 spinnerIndex = i;

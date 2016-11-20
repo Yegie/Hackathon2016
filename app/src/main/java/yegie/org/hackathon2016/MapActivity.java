@@ -2,12 +2,14 @@ package yegie.org.hackathon2016;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.GpsStatus;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
@@ -28,6 +30,8 @@ public class MapActivity extends Activity {
 
     double latitude, longitude;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +42,12 @@ public class MapActivity extends Activity {
         int height = (int) ((1.0/10.0) * displaymetrics.heightPixels);
         int width = (int) ((1.0/3.0) * displaymetrics.widthPixels);
 
+        long numMilliSeconds = (long) getIntent().getExtras().getFloat(SettingsActivity.GAME_LENGTH)*60000;
+
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Log.d("debug", "Provider enabled status is " + lm.isProviderEnabled(LocationManager.GPS_PROVIDER));
+
 
 
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -87,7 +94,7 @@ public class MapActivity extends Activity {
 
 
         TextView t1 =(TextView) findViewById(R.id.textView1);
-        TextView t2 =(TextView) findViewById(R.id.textView2);
+        final TextView t2 =(TextView) findViewById(R.id.textView2);
         TextView t3 =(TextView) findViewById(R.id.textView3);
         MapView m1 = (MapView) findViewById(R.id.map);
         GraphicsLayer gl = new GraphicsLayer();
@@ -101,17 +108,44 @@ public class MapActivity extends Activity {
 
         t1.setText("Test updating UI");
 
-
         SimpleMarkerSymbol simpleMarker = new SimpleMarkerSymbol(Color.RED, 10, SimpleMarkerSymbol.STYLE.CIRCLE);
         Point pointGeometry = new Point(latitude,longitude);
         Graphic pointGraphic = new Graphic(pointGeometry, simpleMarker);
-        gl.addGraphic(pointGraphic);
-
-        m1.addLayer(gl);
 
         t1.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t2.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t3.setLayoutParams(new LinearLayout.LayoutParams(width,height));
 
+
+        gl.addGraphic(pointGraphic);
+
+
+        CountDownTimer ct = new CountDownTimer(numMilliSeconds, 1000l) {
+
+            public void onTick(long millisUntilFinished) {
+                millisUntilFinished = millisUntilFinished - 1000l;
+
+                //Add an entra zero so time doesn't look weird if <10 seconds
+                StringBuilder str = new StringBuilder();
+                str.append(millisUntilFinished/1000/60);
+                str.append(":");
+                if ((((millisUntilFinished/1000)%60)<10))
+                {
+                    str.append("0");
+                }
+                str.append((millisUntilFinished/1000)%60);
+
+                t2.setText(str);
+            }
+
+            public void onFinish() {
+                t2.setText("Finished!");
+            }
+        }.start();
+
+
+
+
+        m1.addLayer(gl);
     }
 }

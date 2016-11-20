@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -18,9 +19,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bundle settings = SettingsActivity.getGameSettings(getBaseContext());
-        length = settings.getFloat(SettingsActivity.GAME_LENGTH);
-        sound = settings.getBoolean(SettingsActivity.GAME_SOUND);
+        getSettings();
 
         Button mainButton = (Button) findViewById(R.id.main_button);
 
@@ -43,6 +42,14 @@ public class MainActivity extends Activity {
             }
         });
     }
+
+    private void getSettings() {
+        Bundle settings = SettingsActivity.getGameSettings(getBaseContext());
+        length = settings.getFloat(SettingsActivity.GAME_LENGTH);
+        sound = settings.getBoolean(SettingsActivity.GAME_SOUND);
+        Log.d("debug", "" + length);
+    }
+
     private void startMapAct()
     {
         Intent mapIntent = new Intent(this,MapActivity.class);
@@ -56,6 +63,12 @@ public class MainActivity extends Activity {
         Intent settingsIntent = new Intent(this,SettingsActivity.class);
 
         startActivity(settingsIntent);
+    }
+
+    @Override
+    public void onResume() {
+        getSettings();
+        super.onResume();
     }
 }
 
