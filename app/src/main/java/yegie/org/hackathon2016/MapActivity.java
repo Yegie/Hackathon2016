@@ -34,6 +34,8 @@ import com.esri.core.symbol.SimpleMarkerSymbol;
 public class MapActivity extends Activity {
     private GraphicsLayer gl=null;
     private MapView m1=null;
+    private int id;
+    private boolean glexists = false;
 
     double latitude, longitude;
 
@@ -64,6 +66,18 @@ public class MapActivity extends Activity {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
                 m1.centerAt(latitude,longitude,true);
+                if(glexists)
+                {
+                    GraphicsLayer[] lays = (GraphicsLayer[]) m1.getLayers();
+                    for(GraphicsLayer a : lays)
+                    {
+                        int[] b = a.getGraphicIDs();
+                        for(int j = 0; j<b.length; ++j)
+                        {
+                            ((Point)a.getGraphic(b[j]).getGeometry()).setXY(longitude,latitude);
+                        }
+                    }
+                }
             }
 
             @Override
@@ -118,7 +132,8 @@ public class MapActivity extends Activity {
 
         gl=new GraphicsLayer();
 
-        m1.addLayer(gl);
+        id = m1.addLayer(gl);
+        glexists = true;
 
         //hardcode since GPS is slightly inaccurate for demo purposes
 //        latitude=39.998361;
@@ -158,7 +173,7 @@ public class MapActivity extends Activity {
 
 //        gl.setGraphicVisible(userDot,true);
 
-        gl.addGraphic(pointGraphic);
+       // gl.addGraphic(pointGraphic);
 
 //        CountDownTimer ct = new CountDownTimer(numMilliSeconds, 1000l) {
 //
