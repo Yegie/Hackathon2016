@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,8 +38,8 @@ public class SettingsActivity extends Activity {
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
+        //Create things to have changeable settings and initialize
         Spinner timeSpinner = (Spinner) findViewById(R.id.time_spinner);
-
         CheckBox soundCheck = (CheckBox) findViewById(R.id.sound_checkbox);
 
         ArrayAdapter<CharSequence> timeOptions = ArrayAdapter.createFromResource(this, R.array.time_options, android.R.layout.simple_spinner_item);
@@ -57,7 +56,7 @@ public class SettingsActivity extends Activity {
             soundCheck.setChecked(gameSound);
         }
 
-
+        //Listener for changing the time spinner
         timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -97,19 +96,16 @@ public class SettingsActivity extends Activity {
                     }
                 }
                 spinnerIndex = i;
-
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //Nothing
+                //Do nothing
             }
         });
     }
 
     private void saveData(){
-
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(GAME_SOUND, gameSound);
         editor.putFloat(GAME_LENGTH, (float)gameLength);
@@ -118,6 +114,7 @@ public class SettingsActivity extends Activity {
 
     }
 
+    //Listener for sound effects checkbox
     public void onCheckboxClicked(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         if(checked && view.getId() == R.id.sound_checkbox){
@@ -127,6 +124,7 @@ public class SettingsActivity extends Activity {
         }
     }
 
+    //Go back to main menu
     @Override
     public void onBackPressed(){
         saveData();

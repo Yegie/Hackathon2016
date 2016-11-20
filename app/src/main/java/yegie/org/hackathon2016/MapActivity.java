@@ -56,6 +56,7 @@ public class MapActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        //Create displaymetrics to find screen width and height
         DisplayMetrics displaymetrics=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         final int height=(int) ((1.0 / 10.0) * displaymetrics.heightPixels);
@@ -63,11 +64,10 @@ public class MapActivity extends Activity {
 
         long numMilliSeconds=(long) getIntent().getExtras().getFloat(SettingsActivity.GAME_LENGTH) * 60000;
 
-
+        //Make location manager to figure out location
         LocationManager lm=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Log.d("debug", "Provider enabled status is " + lm.isProviderEnabled(LocationManager.GPS_PROVIDER));
 
-
+        //Create listener for location
         final LocationListener ll = new LocationListener() {
 
             @Override
@@ -108,17 +108,17 @@ public class MapActivity extends Activity {
 
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
-
+                //Do nothing
             }
 
             @Override
             public void onProviderEnabled(String s) {
-
+                //Do nothing
             }
 
             @Override
             public void onProviderDisabled(String s) {
-
+                //Do nothing
             }
         };
 
@@ -152,16 +152,15 @@ public class MapActivity extends Activity {
                 mHandler.postDelayed(walker,200);
             }
         };
-
         mHandler.postDelayed(walker,200);
     }
 
+        //Set the screen to the layout we made
         setContentView(R.layout.activity_map);
 
-
+        //Assign text fields and tell them where to go, map view, graphics layer for dots
         TextView t1=(TextView) findViewById(R.id.textView1);
         final TextView t2=(TextView) findViewById(R.id.textView2);
-
 
         t1.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t2.setLayoutParams(new LinearLayout.LayoutParams(width,height));
@@ -172,6 +171,7 @@ public class MapActivity extends Activity {
 
         m1.addLayer(gl);
 
+        //Doesn't work correctly but hypothetically should zoom
         m1.centerAndZoom(latitude, longitude, .1f);
         m1.zoomin();
 
@@ -187,7 +187,7 @@ public class MapActivity extends Activity {
             }
         },500);
 
-
+        //Create timer object and update text field 2 with time left
         CountDownTimer ct = new CountDownTimer(numMilliSeconds, 1000l) {
 
             public void onTick(long millisUntilFinished) {
@@ -214,6 +214,7 @@ public class MapActivity extends Activity {
         steps(t1);
     }
 
+    //Method to put 30 dots within ~1 Mile radius
     private void distributePoints(int n){
 
         SimpleMarkerSymbol coinMarker = new SimpleMarkerSymbol(Color.MAGENTA, 8, SimpleMarkerSymbol.STYLE.CIRCLE);
@@ -238,6 +239,7 @@ public class MapActivity extends Activity {
         }
     }
 
+    //Puts markers on map
     private void populateMarkers() {
         Log.d("GEOGAME","ShowUserDot()");
 
@@ -252,18 +254,16 @@ public class MapActivity extends Activity {
         userUid = gl.addGraphic(pointGraphic);
     }
 
+    //Counts steps and updates t1 with step count
     public void steps(final TextView t1) {
 
         SensorManager sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        Log.d("debug", "entering steps");
 
         // Step Counter
         sManager.registerListener(new SensorEventListener() {
 
                                       @Override
                                       public void onSensorChanged(SensorEvent event) {
-                                          Log.d("debug", "changing text");
                                           float steps = event.values[0];
                                           stepCount++;
                                           t1.setText("Steps: " + stepCount);
@@ -271,7 +271,7 @@ public class MapActivity extends Activity {
 
                                       @Override
                                       public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+                                          //Do nothing
                                       }
                                   }, sManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER),
                 SensorManager.SENSOR_DELAY_UI);
@@ -281,12 +281,12 @@ public class MapActivity extends Activity {
 
                                       @Override
                                       public void onSensorChanged(SensorEvent event) {
-                                          //numSteps++;
+                                          //Do nothing
                                       }
 
                                       @Override
                                       public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+                                          //Do nothing
                                       }
                                   }, sManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR),
                 SensorManager.SENSOR_DELAY_UI);

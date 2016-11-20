@@ -19,8 +19,8 @@ public class MainActivity extends Activity {
 
         getSettings();
 
+        //Create buttons and set listeners to them
         Button mainButton = (Button) findViewById(R.id.main_button);
-
         Button settingsButton = (Button) findViewById(R.id.settings_button);
 
         assert mainButton != null;
@@ -31,7 +31,6 @@ public class MainActivity extends Activity {
             }
         });
 
-
         assert settingsButton != null;
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,8 +38,6 @@ public class MainActivity extends Activity {
                 startSettingsAct();
             }
         });
-
-
     }
 
     private void getSettings() {
@@ -61,7 +58,6 @@ public class MainActivity extends Activity {
     private void startSettingsAct()
     {
         Intent settingsIntent = new Intent(this,SettingsActivity.class);
-
         startActivity(settingsIntent);
     }
 
