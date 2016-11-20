@@ -49,7 +49,7 @@
         android:layout_height="fill_parent"
         mapoptions.MapType="Streets"
         mapoptions.center="34.056215, -117.195668"
-        mapoptions.ZoomLevel="16">
+        mapoptions.ZoomLevel="21">
     </com.esri.android.map.MapView>
 
 </LinearLayout>

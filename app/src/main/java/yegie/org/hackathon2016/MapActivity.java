@@ -85,8 +85,8 @@ public class MapActivity extends Activity {
         Log.d("debug", "Latitude is " + latitude);
         Log.d("debug", "Longitude is " + longitude);
 
+        setContentView(R.layout.activity_map);
 
-        setContentView(activity_map);
 
         TextView t1 =(TextView) findViewById(R.id.textView1);
         TextView t2 =(TextView) findViewById(R.id.textView2);
@@ -94,33 +94,22 @@ public class MapActivity extends Activity {
         MapView m1 = (MapView) findViewById(R.id.map);
         GraphicsLayer gl = new GraphicsLayer();
 
-        m1.centerAndZoom(latitude, longitude, 50);
+        m1.centerAndZoom(latitude, longitude, .1f);
+        m1.zoomin();
+
+        t1.setText("Test updating UI");
+
 
         SimpleMarkerSymbol simpleMarker = new SimpleMarkerSymbol(Color.RED, 10, SimpleMarkerSymbol.STYLE.CIRCLE);
-
         Point pointGeometry = new Point(latitude,longitude);
-
         Graphic pointGraphic = new Graphic(pointGeometry, simpleMarker);
-
         gl.addGraphic(pointGraphic);
 
-
-
         m1.addLayer(gl);
-
-
-
-
-
 
         t1.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t2.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t3.setLayoutParams(new LinearLayout.LayoutParams(width,height));
-
-
-
-        setContentView(activity_map);
-
 
     }
 }
