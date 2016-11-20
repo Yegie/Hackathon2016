@@ -60,8 +60,8 @@ public class MapActivity extends Activity {
 
         DisplayMetrics displaymetrics=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int height=(int) ((1.0 / 10.0) * displaymetrics.heightPixels);
-        int width=(int) ((1.0 / 3.0) * displaymetrics.widthPixels);
+        final int height=(int) ((1.0 / 10.0) * displaymetrics.heightPixels);
+        final int width=(int) ((1.0 / 3.0) * displaymetrics.widthPixels);
 
         long numMilliSeconds=(long) getIntent().getExtras().getFloat(SettingsActivity.GAME_LENGTH) * 60000;
 
@@ -73,13 +73,14 @@ public class MapActivity extends Activity {
 //        Location location=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
-        final LocationListener ll=new LocationListener() {
+        final LocationListener ll = new LocationListener() {
 
             @Override
             public void onLocationChanged(Location location) {
+                TextView t3=(TextView) findViewById(R.id.textView3);
+                t3.setLayoutParams(new LinearLayout.LayoutParams(width,height));
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
-
                 if (m1 != null) {
                     m1.centerAt(latitude, longitude, true);
 
@@ -101,6 +102,7 @@ public class MapActivity extends Activity {
                                         && (cur.getX() - longitude) * (cur.getX() - longitude) < closeConst) {
                                     coinReal[i] = false;
                                     coinsCollected++;
+                                    t3.setText("Coins: " + coinsCollected);
                                     gl.removeGraphic(idsOfCoins[i]);
                                 }
                             }
@@ -172,11 +174,11 @@ public class MapActivity extends Activity {
 
         TextView t1=(TextView) findViewById(R.id.textView1);
         final TextView t2=(TextView) findViewById(R.id.textView2);
-        final TextView t3=(TextView) findViewById(R.id.textView3);
+
 
         t1.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t2.setLayoutParams(new LinearLayout.LayoutParams(width,height));
-        t3.setLayoutParams(new LinearLayout.LayoutParams(width,height));
+
 
 //        t1.setClickable(true);
 //        t1.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +201,6 @@ public class MapActivity extends Activity {
 
         m1.centerAndZoom(latitude, longitude, .1f);
         m1.zoomin();
-
 
 
         t1.setText("Test updating UI");
@@ -331,5 +332,4 @@ public class MapActivity extends Activity {
                                   }, sManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR),
                 SensorManager.SENSOR_DELAY_UI);
     }
-
 }
