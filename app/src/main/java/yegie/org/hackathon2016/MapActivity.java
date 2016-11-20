@@ -199,6 +199,8 @@ public class MapActivity extends Activity {
         m1.centerAndZoom(latitude, longitude, .1f);
         m1.zoomin();
 
+
+
         t1.setText("Test updating UI");
 
 
