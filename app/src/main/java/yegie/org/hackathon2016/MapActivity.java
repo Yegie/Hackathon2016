@@ -39,25 +39,27 @@ public class MapActivity extends Activity {
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int height = (int) ((1.0/10.0) * displaymetrics.heightPixels);
-        int width = (int) ((1.0/3.0) * displaymetrics.widthPixels);
+        int height = (int) ((1.0 / 10.0) * displaymetrics.heightPixels);
+        int width = (int) ((1.0 / 3.0) * displaymetrics.widthPixels);
 
-        long numMilliSeconds = (long) getIntent().getExtras().getFloat(SettingsActivity.GAME_LENGTH)*60000;
+        long numMilliSeconds = (long) getIntent().getExtras().getFloat(SettingsActivity.GAME_LENGTH) * 60000;
 
 
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Log.d("debug", "Provider enabled status is " + lm.isProviderEnabled(LocationManager.GPS_PROVIDER));
 
 
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
-        LocationListener ll = new LocationListener(){
+        LocationListener ll = new LocationListener() {
 
             @Override
             public void onLocationChanged(Location location) {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
+
+
             }
 
             @Override
@@ -76,8 +78,8 @@ public class MapActivity extends Activity {
             }
         };
 
-        while (location==null)
-        {
+
+        while (location == null) {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
         }
 
@@ -92,40 +94,35 @@ public class MapActivity extends Activity {
         setContentView(R.layout.activity_map);
 
 
-        TextView t1 =(TextView) findViewById(R.id.textView1);
-        final TextView t2 =(TextView) findViewById(R.id.textView2);
-        TextView t3 =(TextView) findViewById(R.id.textView3);
+        TextView t1 = (TextView) findViewById(R.id.textView1);
+        final TextView t2 = (TextView) findViewById(R.id.textView2);
+        TextView t3 = (TextView) findViewById(R.id.textView3);
         MapView m1 = (MapView) findViewById(R.id.map);
         GraphicsLayer gl = new GraphicsLayer();
 
         //hardcode since GPS is slightly inaccurate for demo purposes
         latitude = 39.998361;
-        longitude =  -83.00776;
+        longitude = -83.00776;
 
         m1.centerAndZoom(latitude, longitude, .1f);
-        m1.zoomin();
 
         t1.setText("Test updating UI");
 
-
-
         SimpleMarkerSymbol simpleMarker = new SimpleMarkerSymbol(Color.RED, 10, SimpleMarkerSymbol.STYLE.CIRCLE);
-        Point pointGeometry = new Point(latitude,longitude);
+        Point pointGeometry = new Point(latitude, longitude);
         Graphic pointGraphic = new Graphic(pointGeometry, simpleMarker);
-        gl.addGraphic(pointGraphic);
 
+
+        int res1 = gl.addGraphic(pointGraphic);
+
+        gl.setGraphicVisible(res1, true);
+        gl.bringToFront(res1);
         int userDot = m1.addLayer(gl);
-
-        gl.setGraphicVisible(userDot,true);
-        gl.bringToFront(userDot);
 
 
         t1.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t2.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t3.setLayoutParams(new LinearLayout.LayoutParams(width,height));
-
-
-        gl.addGraphic(pointGraphic);
 
 
         CountDownTimer ct = new CountDownTimer(numMilliSeconds, 1000l) {
@@ -152,8 +149,5 @@ public class MapActivity extends Activity {
         }.start();
 
 
-
-
-        m1.addLayer(gl);
     }
 }
