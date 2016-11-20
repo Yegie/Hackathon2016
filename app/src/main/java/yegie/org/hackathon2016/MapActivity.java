@@ -35,9 +35,11 @@ public class MapActivity extends Activity {
     private GraphicsLayer gl=null;
     private MapView m1=null;
     int[] idsOfCoins;
+    boolean[] coinReal;
+    int numOfCoins = 30;
 
     double latitude, longitude;
-    private int userUid;
+    private int userUid, coinsCollected = 0;
     boolean ditributedPoints = false;
 
     Handler mHandler=new Handler();
@@ -82,7 +84,19 @@ public class MapActivity extends Activity {
                     gl.updateGraphic(userUid, point);
                     if(!ditributedPoints){
                         ditributedPoints = true;
-                        distributePoints(30);
+                        distributePoints(numOfCoins);
+                    } else {
+                        for(int i = 0; i < numOfCoins; ++i){
+                            Point cur = (Point) gl.getGraphic(idsOfCoins[i]).getGeometry();
+                            final float closeConst = 0.000009f;
+                            if(coinReal[i] && (cur.getY()-latitude)*(cur.getY()-latitude)<closeConst
+                                    && (cur.getX()-longitude)*(cur.getX()-longitude)<closeConst)
+                            {
+                                coinReal[i]=false;
+                                coinsCollected++;
+
+                            }
+                        }
                     }
                 }
             }
@@ -220,6 +234,7 @@ public class MapActivity extends Activity {
         SimpleMarkerSymbol coinMarker = new SimpleMarkerSymbol(Color.MAGENTA, 8, SimpleMarkerSymbol.STYLE.CIRCLE);
 
         idsOfCoins = new int[n];
+        coinReal = new boolean[n];
 
         for(int i = 0; i < n; ++i)
         {
@@ -233,6 +248,7 @@ public class MapActivity extends Activity {
 
             Graphic pointGraphic = new Graphic(pointGeometry, coinMarker);
             idsOfCoins[i] = gl.addGraphic(pointGraphic);
+            coinReal[i] = true;
 
         }
     }
