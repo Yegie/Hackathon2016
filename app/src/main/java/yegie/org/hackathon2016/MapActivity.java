@@ -93,14 +93,15 @@ public class MapActivity extends Activity {
                         distributePoints(numOfCoins);
                     } else {
                         for(int i = 0; i < numOfCoins; ++i){
-                            Point cur = (Point) gl.getGraphic(idsOfCoins[i]).getGeometry();
-                            final float closeConst = 0.000009f;
-                            if(coinReal[i] && (cur.getY()-latitude)*(cur.getY()-latitude)<closeConst
-                                    && (cur.getX()-longitude)*(cur.getX()-longitude)<closeConst)
-                            {
-                                coinReal[i]=false;
-                                coinsCollected++;
-
+                            if(coinReal[i]) {
+                                Point cur = (Point) gl.getGraphic(idsOfCoins[i]).getGeometry();
+                                final float closeConst = 0.000009f;
+                                if ((cur.getY() - latitude) * (cur.getY() - latitude) < closeConst
+                                        && (cur.getX() - longitude) * (cur.getX() - longitude) < closeConst) {
+                                    coinReal[i] = false;
+                                    coinsCollected++;
+                                    gl.removeGraphic(idsOfCoins[i]);
+                                }
                             }
                         }
                     }
