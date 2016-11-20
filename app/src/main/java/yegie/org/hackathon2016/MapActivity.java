@@ -17,8 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.esri.android.map.GraphicsLayer;
+import com.esri.android.map.Layer;
 import com.esri.android.map.MapView;
 import com.esri.core.geometry.Point;
+import com.esri.core.geometry.SpatialReference;
 import com.esri.core.map.Graphic;
 import com.esri.core.symbol.SimpleMarkerSymbol;
 
@@ -29,8 +31,6 @@ import com.esri.core.symbol.SimpleMarkerSymbol;
 public class MapActivity extends Activity {
 
     double latitude, longitude;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,6 @@ public class MapActivity extends Activity {
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Log.d("debug", "Provider enabled status is " + lm.isProviderEnabled(LocationManager.GPS_PROVIDER));
-
 
 
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -108,9 +107,18 @@ public class MapActivity extends Activity {
 
         t1.setText("Test updating UI");
 
+
+
         SimpleMarkerSymbol simpleMarker = new SimpleMarkerSymbol(Color.RED, 10, SimpleMarkerSymbol.STYLE.CIRCLE);
         Point pointGeometry = new Point(latitude,longitude);
         Graphic pointGraphic = new Graphic(pointGeometry, simpleMarker);
+        gl.addGraphic(pointGraphic);
+
+        int userDot = m1.addLayer(gl);
+
+        gl.setGraphicVisible(userDot,true);
+        gl.bringToFront(userDot);
+
 
         t1.setLayoutParams(new LinearLayout.LayoutParams(width,height));
         t2.setLayoutParams(new LinearLayout.LayoutParams(width,height));
