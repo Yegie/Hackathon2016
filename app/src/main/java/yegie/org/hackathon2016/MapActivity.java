@@ -50,6 +50,7 @@ public class MapActivity extends Activity {
 
     Handler mHandler=new Handler();
     private Runnable walker;
+    int stepCount = 0;
 
 
     @Override
@@ -302,7 +303,8 @@ public class MapActivity extends Activity {
                                       public void onSensorChanged(SensorEvent event) {
                                           Log.d("debug", "changing text");
                                           float steps = event.values[0];
-                                          t1.setText("Steps: " + (int) steps);
+                                          stepCount++;
+                                          t1.setText("Steps: " + stepCount);
                                       }
 
                                       @Override
